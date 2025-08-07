@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
         lucide.createIcons();
     }
     
+    // Initialize EmailJS
+    initializeEmailJS();
+    
     // Navigation highlighting
     updateActiveNavLink();
     
@@ -39,6 +42,13 @@ function updateActiveNavLink() {
     });
 }
 
+// Initialize EmailJS
+function initializeEmailJS() {
+    // Initialize EmailJS with your public key
+    // You'll need to replace 'YOUR_PUBLIC_KEY' with your actual EmailJS public key
+    emailjs.init('lZEHllNCN2DP6y3i0');
+}
+
 // Handle contact form submission
 function handleFormSubmit(e) {
     e.preventDefault();
@@ -60,23 +70,50 @@ function handleFormSubmit(e) {
         lucide.createIcons();
     }
     
-    // Simulate form submission (replace with actual form handling)
-    setTimeout(() => {
-        // Reset form
-        form.reset();
-        
-        // Show success message
-        showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
-        
-        // Reset button
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-        
-        // Re-initialize icons
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-    }, 2000);
+    // Prepare email template parameters
+    const templateParams = {
+        from_name: data.name,
+        from_email: data.email,
+        subject: data.subject,
+        message: data.message,
+        time: new Date().toLocaleString(),
+        to_email: 'derekwang0919@gmail.com' // Your email address
+    };
+    
+    // Send email using EmailJS
+    emailjs.send('service_uekupn6', 'template_8s8ix78', templateParams)
+        .then(function(response) {
+            console.log('SUCCESS!', response.status, response.text);
+            
+            // Reset form
+            form.reset();
+            
+            // Show success message
+            showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
+            
+            // Reset button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            
+            // Re-initialize icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }, function(error) {
+            console.log('FAILED...', error);
+            
+            // Show error message
+            showNotification('Failed to send message. Please try again or contact me directly at derekwang0919@gmail.com', 'error');
+            
+            // Reset button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            
+            // Re-initialize icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
 }
 
 // Show notification
@@ -116,6 +153,11 @@ function showNotification(message, type = 'info') {
             .notification-success {
                 border-color: hsl(142, 76%, 36%);
                 background: hsl(142, 76%, 6%);
+            }
+            
+            .notification-error {
+                border-color: hsl(0, 84%, 60%);
+                background: hsl(0, 84%, 6%);
             }
             
             .notification-content {
