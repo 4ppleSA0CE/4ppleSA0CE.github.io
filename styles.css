@@ -658,3 +658,48 @@ body {
 .animate-pulse {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+/* Resume Page Styles */
+.resume-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.resume-embed {
+    margin-bottom: 2rem;
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.resume-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.resume-actions .btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .resume-embed iframe {
+        height: 600px;
+    }
+    
+    .resume-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .resume-actions .btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+}
